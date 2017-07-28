@@ -24,14 +24,12 @@
             ajax.onreadystatechange = function () {
                 if (ajax.status === 200 || ajax.status === 304) {
                     if (ajax.readyState === 4) {
-                        ajax.open('POST', '../Controller/yo.php', true);
-                        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                        ajax.send('comment=' + textarea);
-                    } else {
-                        console.log('error');
-                    }
+                        console.log(ajax.responseText);
+                    } 
                 }
             };
+            ajax.open('POST', 'Controller/yo.php?comment=pomm', true);
+            ajax.send();
 
         });
     </script>
