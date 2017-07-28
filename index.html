@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        #displayMessag{
+            border:1px solid black;
+            height:60vh;
+            width:30%;
+            overflow: scroll;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,22 +22,30 @@
         <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
         <input type="submit" value='send'>
     </form>
+    <h2>TCHAT STYLEEE</h2>
+    <div id='displayMessag'>
+    </div>
     <script>
         document.querySelector('input').addEventListener('click', function (e) {
             e.preventDefault();
 
             let textarea = document.querySelector('textarea').value;
+            let innerdiv = document.createElement('p')
+            innerdiv.textContent = textarea;
 
-            let ajax = new XMLHttpRequest();
-            ajax.onreadystatechange = function () {
-                if (ajax.status === 200 || ajax.status === 304) {
-                    if (ajax.readyState === 4) {
-                        console.log(ajax.responseText);
-                    } 
-                }
-            };
-            ajax.open('POST', 'Controller/yo.php?comment=pomm', true);
-            ajax.send();
+            document.querySelector('#displayMessag').appendChild(innerdiv);
+            
+
+            // let ajax = new XMLHttpRequest();
+            // ajax.onreadystatechange = function () {
+            //     if (ajax.status === 200 || ajax.status === 304) {
+            //         if (ajax.readyState === 4) {
+            //             console.log(ajax.responseText);
+            //         }
+            //     }
+            // };
+            // ajax.open('POST', 'Controller/yo.php', true);
+            // ajax.send('message=' + );
 
         });
     </script>

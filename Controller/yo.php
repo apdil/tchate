@@ -1,10 +1,9 @@
 <?php
-$comment = htmlspecialchars($_GET['comment']);
+$message = htmlspecialchars($_GET['message']);
 
-echo 'pomm' . $comment;
-// $pdo = new PDO('mysql:host=localhost; dbname=tchat', 'admin', 'pomme');
+$pdo = new PDO('mysql:host=localhost; dbname=tchat', 'admin', 'pomme');
 
-// $stmt = $pdo->prepare('INSERT INTO `comment` (comment) VALUES (:comment)');
-// $stmt->bindValue(':comment', $comment);
-// $stmt->execute();
+$stmt = $pdo->prepare('INSERT INTO `comment` (comment) VALUES (:comment)');
+$stmt->bindValue(':comment', $message);
+$stmt->execute();
 ?>
