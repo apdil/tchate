@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="yo.php">
+        <label for="comment">Commenaire :</label>
+        <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+        <input type="submit" value='send'>
+    </form>
+    <script>
+        document.querySelector('input').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            let textarea = document.querySelector('textarea').value;
+
+            let ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function () {
+                if (ajax.status === 200 || ajax.status === 304) {
+                    if (ajax.readyState === 4) {
+                        ajax.open('POST', '../Controller/yo.php', true);
+                        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        ajax.send('comment=' + textarea);
+                    } else {
+                        console.log('error');
+                    }
+                }
+            };
+
+        });
+    </script>
+</body>
+
+</html>
