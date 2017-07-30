@@ -27,31 +27,33 @@
     <script src='script/ajax.js'></script>
     <script>
         let displayMessag = document.querySelector('#displayMessag');
-        doAjax({
-            method: 'GET',
-            url: 'Controller/yo.php',
-            callback: function (reponse) {
-                let object = JSON.parse(reponse);
-                for (let commentObject of object) {
-                    let innerdiv = document.createElement('p')
-                    innerdiv.textContent = commentObject.comment;
-                    displayMessag.appendChild(innerdiv);
+        let oldMessag = [];
+        setInterval(function () {
+            doAjax({
+                method: 'GET',
+                url: 'Controller/yo.php',
+                callback: function (reponse) {
+                    let object = JSON.parse(reponse);
+                    if (object !== oldMessag[oldMessag.length - 1]) {
+                        oldMessag.push(object);
+                        displayMessag.innerHTML = "";
+                        for (let commentObject of object) {
+                            let innerdiv = document.createElement('p')
+                            innerdiv.textContent = commentObject.comment;
+                            displayMessag.appendChild(innerdiv);
+                        }
+                    }
+                    displayMessag.scrollTop = displayMessag.scrollHeight;
                 }
-            }
-        });
+            });
+        }, 500);
 
         document.querySelector('input').addEventListener('click', function (e) {
             e.preventDefault();
             doAjax({
                 method: 'POST',
                 url: 'Controller/yo.php',
-                args: 'message=' + document.querySelector('textarea').value,
-                callback: function (reponse) {
-                    let innerdiv = document.createElement('p')
-                    innerdiv.textContent = reponse;
-                    displayMessag.appendChild(innerdiv);
-                    displayMessag.scrollTop = displayMessag.scrollHeight;
-                }
+                args: 'message=' + document.querySelector('textarea').value
             });
         });
     </script>
