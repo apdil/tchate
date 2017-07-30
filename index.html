@@ -7,46 +7,52 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        #displayMessag{
-            border:1px solid black;
-            height:60vh;
-            width:30%;
+        #displayMessag {
+            border: 1px solid black;
+            height: 60vh;
+            width: 30%;
             overflow: scroll;
         }
     </style>
 </head>
 
 <body>
-    <form action="yo.php">
-        <label for="comment">Commenaire :</label>
-        <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
-        <input type="submit" value='send'>
-    </form>
     <h2>TCHAT STYLEEE</h2>
     <div id='displayMessag'>
     </div>
+    <form action="yo.php">
+        <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Comment"></textarea>
+        <input type="submit" value='send'>
+    </form>
+    <script src='script/ajax.js'></script>
     <script>
+        let displayMessag = document.querySelector('#displayMessag');
+        doAjax({
+            method: 'GET',
+            url: 'Controller/yo.php',
+            callback: function (reponse) {
+                let object = JSON.parse(reponse);
+                for (let commentObject of object) {
+                    let innerdiv = document.createElement('p')
+                    innerdiv.textContent = commentObject.comment;
+                    displayMessag.appendChild(innerdiv);
+                }
+            }
+        });
+
         document.querySelector('input').addEventListener('click', function (e) {
             e.preventDefault();
-
-            let textarea = document.querySelector('textarea').value;
-            let innerdiv = document.createElement('p')
-            innerdiv.textContent = textarea;
-
-            document.querySelector('#displayMessag').appendChild(innerdiv);
-            
-
-            // let ajax = new XMLHttpRequest();
-            // ajax.onreadystatechange = function () {
-            //     if (ajax.status === 200 || ajax.status === 304) {
-            //         if (ajax.readyState === 4) {
-            //             console.log(ajax.responseText);
-            //         }
-            //     }
-            // };
-            // ajax.open('POST', 'Controller/yo.php', true);
-            // ajax.send('message=' + );
-
+            doAjax({
+                method: 'POST',
+                url: 'Controller/yo.php',
+                args: 'message=' + document.querySelector('textarea').value,
+                callback: function (reponse) {
+                    let innerdiv = document.createElement('p')
+                    innerdiv.textContent = reponse;
+                    displayMessag.appendChild(innerdiv);
+                    displayMessag.scrollTop = displayMessag.scrollHeight;
+                }
+            });
         });
     </script>
 </body>
