@@ -39,17 +39,11 @@
 
         let displayMessag = document.querySelector('#displayMessag');
 
-        let message = document.querySelector('#comment').value;
-        let login = document.querySelector('#login').value;
-
-        let now = new Date();
+        let now = new Date(); // create date HH/min/s
         let hh = now.getHours();
         let min = now.getMinutes();
         let sec = now.getSeconds();
-        now = hh + 'h ' + min + 'm ' + sec +   's';
-
-        allMessag.push(message);
-        dates.push(now);
+        now = hh + 'h ' + min + 'm ' + sec + 's';
 
         let intervalID = setInterval(function () {
             doAjax({
@@ -73,13 +67,20 @@
 
         document.querySelector('#submit').addEventListener('click', function (e) {
             e.preventDefault();
-            let message = new Message()
-            doAjax({
-                method: 'POST',
-                url: 'Controller/yo.php',
-                args: 'message=' + document.querySelector('#comment').value + '&' +
-                'login=' + document.querySelector('#login').value
-            });
+            let message = document.querySelector('#comment').value;
+            let login = document.querySelector('#login').value;
+
+            allMessag.push(message);
+            dates.push(now);
+
+            let message = new Message(message, now); // create message object
+            // let jsonMessage = JSON.stringify(message); // transform message in string
+
+            // doAjax({
+            //     method: 'POST',
+            //     url: 'Controller/yo.php',
+            //     args: 'message=' + jsonMessage
+            // });
         });
 
         document.querySelector('#loginButt').addEventListener('click', function (e) {
