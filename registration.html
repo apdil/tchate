@@ -8,17 +8,53 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
     <title>Document</title>
+    <style>
+        .red {
+            background-color: red;
+        }
+    </style>
 </head>
 
 <body>
-    <form action='registrationProcess.php' method='POST'>
-        <input id='login' type="text" placeholder="Login">
-        <input id='mdp' type="password" placeholder="Mdp">
-        <input id='submit' type='submit' value='send'>
-    </form>
+    <section class="container-fluid">
+        <h2>registration</h2>
+        <form action='registrationProcess.php' method='POST'>
+            <input id='login' type="text" placeholder="Login">
+            <input id='mdp' type="password" placeholder="Mdp">
+            <input id='submit' type='submit' value='send'>
+        </form>
+    </section>
+    <section class="container-fluid">
+        <h2>connexion</h2>
+        <form action='Controller/connexProccess.php' method='POST'>
+            <input id='loginConnex' name='login' type="text" placeholder="Login">
+            <input id='mdpConnex' name='mdp' type="password" placeholder="Mdp">
+            <input type='submit' value='send'>
+        </form>
+    </section>
     <script src='script/ajax.js'></script>
     <script src='Model/User.js'></script>
     <script>
+        setInterval(function () { // check if login exist in db
+            let login = document.querySelector('#login').value;
+            let mdp = document.querySelector('#mdp').value;
+            doAjax({
+                url: 'Controller/displayDbUsers.php',
+                callback: function (reponse) {
+                    let usersObj = JSON.parse(reponse);
+                    for (let user of usersObj) {
+                        if (user.login === login) {
+                            document.querySelector('#login').classList = 'red';
+                            document.querySelector('#submit').style.display = 'none';
+                            break;
+                        } else {
+                            document.querySelector('#login').classList.remove('red');
+                            document.querySelector('#submit').style.display = 'block';
+                        }
+                    }
+                }
+            });
+        }, 1000);
         document.querySelector('#submit').addEventListener('click', function (e) {
             e.preventDefault();
             let login = document.querySelector('#login').value;

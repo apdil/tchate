@@ -8,6 +8,4 @@
     $stmt->bindValue(':login', $userObject->login, PDO::PARAM_STR);
     $stmt->bindValue(':mdp', $userObject->mdp, PDO::PARAM_STR);
     $stmt->execute();
-
-
 ?>
