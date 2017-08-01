@@ -13,6 +13,10 @@
             width: 30%;
             overflow: scroll;
         }
+
+        #login {
+            display: none;
+        }
     </style>
 </head>
 
@@ -21,14 +25,33 @@
     <div id='displayMessag'>
     </div>
     <form action="yo.php">
-        <textarea name="comment" id="comment" cols="30" rows="10" placeholder="Comment"></textarea>
-        <input type="submit" value='send'>
+        <input name="comment" id="comment" placeholder="Comment">
+        <input name="login" id="login" placeholder="login">
+        <input id='submit' type="submit" value='send'>
+        <input id='loginButt' type="submit" value='login'>
     </form>
     <script src='script/ajax.js'></script>
+    <script src='Model/message.js'></script>
     <script>
+        let oldMessag = []; // get db state
+        let allMessag = []; // put message
+        let dates = []; // put date of messags
+
         let displayMessag = document.querySelector('#displayMessag');
-        let oldMessag = [];
-        setInterval(function () {
+
+        let message = document.querySelector('#comment').value;
+        let login = document.querySelector('#login').value;
+
+        let now = new Date();
+        let hh = now.getHours();
+        let min = now.getMinutes();
+        let sec = now.getSeconds();
+        now = hh + 'h ' + min + 'm ' + sec +   's';
+
+        allMessag.push(message);
+        dates.push(now);
+
+        let intervalID = setInterval(function () {
             doAjax({
                 method: 'GET',
                 url: 'Controller/yo.php',
@@ -42,19 +65,26 @@
                             innerdiv.textContent = commentObject.comment;
                             displayMessag.appendChild(innerdiv);
                         }
+                        displayMessag.scrollTop = displayMessag.scrollHeight;
                     }
-                    displayMessag.scrollTop = displayMessag.scrollHeight;
                 }
             });
         }, 500);
 
-        document.querySelector('input').addEventListener('click', function (e) {
+        document.querySelector('#submit').addEventListener('click', function (e) {
             e.preventDefault();
+            let message = new Message()
             doAjax({
                 method: 'POST',
                 url: 'Controller/yo.php',
-                args: 'message=' + document.querySelector('textarea').value
+                args: 'message=' + document.querySelector('#comment').value + '&' +
+                'login=' + document.querySelector('#login').value
             });
+        });
+
+        document.querySelector('#loginButt').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector('#login').style.display = 'block';
         });
     </script>
 </body>
