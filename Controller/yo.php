@@ -2,16 +2,20 @@
 
 $pdo = new PDO('mysql:host=localhost; dbname=tchat', 'admin', 'pomme');
 
-if(!empty($_POST['message'])) { // if post put comment in mysql
-    $message = htmlspecialchars($_POST['message']);
-
-    $stmt = $pdo->prepare('INSERT INTO `comment` (comment) VALUES (:comment)'); // post les donnes
-    $stmt->bindValue(':comment', $message, PDO::PARAM_STR);
+if(!empty($_POST['message'])) { // if POST put comment in mysql
+    $message = json_decode($_POST['message']);
+    
+    $stmt = $pdo->prepare('INSERT INTO comments (comment, `date`, user) VALUES 
+    (:comment,:date, :user)'); // post les donnes
+    
+    $stmt->bindValue(':comment', $message->comment, PDO::PARAM_STR);
+    $stmt->bindValue(':date', $message->date, PDO::PARAM_STR);
+    $stmt->bindValue(':user', $message->userId, PDO::PARAM_INT);
     $stmt->execute();
 
-    echo $message;
+    echo json_encode($message);
 } else {
-    $stmt = $pdo->query('SELECT comment FROM comment'); // get data
+    $stmt = $pdo->query('SELECT comment, user FROM comments'); // get data
     $ligns = $stmt->fetchAll();
     echo(json_encode($ligns));
 }

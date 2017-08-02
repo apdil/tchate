@@ -6,7 +6,7 @@ use `tchat`;
 
 CREATE TABLE `users` (id INT AUTO_INCREMENT PRIMARY KEY, login VARCHAR(512), mdp VARCHAR(512));
 
-CREATE TABLE `comments` (id INT AUTO_INCREMENT PRIMARY KEY, comment VARCHAR(2555),
+CREATE TABLE `comments` (id INT AUTO_INCREMENT PRIMARY KEY, comment VARCHAR(2555), date VARCHAR(255),
  user INT, FOREIGN KEY `comments`(user) REFERENCES `users`(id));
 
 

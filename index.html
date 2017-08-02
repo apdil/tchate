@@ -28,11 +28,9 @@
         <input name="comment" id="comment" placeholder="Comment">
         <input name="login" id="login" placeholder="login">
         <input id='submit' type="submit" value='send'>
-        <input id='loginButt' type="submit" value='login'>
     </form>
-    <a href=""></a>
     <script src='script/ajax.js'></script>
-    <script src='Model/message.js'></script>
+    <script src='Model/Message.js'></script>
     <script>
         let oldMessag = []; // get db state
         let allMessag = []; // put message
@@ -40,53 +38,64 @@
 
         let displayMessag = document.querySelector('#displayMessag');
 
-        let now = new Date(); // create date HH/min/s
-        let hh = now.getHours();
-        let min = now.getMinutes();
-        let sec = now.getSeconds();
-        now = hh + 'h ' + min + 'm ' + sec + 's';
-
+        // get message & put in displayMessag
         let intervalID = setInterval(function () {
             doAjax({
                 method: 'GET',
                 url: 'Controller/yo.php',
                 callback: function (reponse) {
-                    let object = JSON.parse(reponse);
-                    if (object !== oldMessag[oldMessag.length - 1]) {
-                        oldMessag.push(object);
-                        displayMessag.innerHTML = "";
-                        for (let commentObject of object) {
-                            let innerdiv = document.createElement('p')
-                            innerdiv.textContent = commentObject.comment;
-                            displayMessag.appendChild(innerdiv);
+                    if (reponse != '') { // if database is empty
+                        let object = JSON.parse(reponse);
+                        if (object !== oldMessag[oldMessag.length - 1]) {
+                            oldMessag.push(object);
+                            displayMessag.innerHTML = "";
+                            for (let commentObject of object) {
+                                let innerdiv = document.createElement('p')
+                                innerdiv.textContent = commentObject.comment;
+                                displayMessag.appendChild(innerdiv);
+                            }
+                            displayMessag.scrollTop = displayMessag.scrollHeight;
                         }
-                        displayMessag.scrollTop = displayMessag.scrollHeight;
                     }
                 }
             });
         }, 500);
 
+        // put messag in db
         document.querySelector('#submit').addEventListener('click', function (e) {
             e.preventDefault();
             let message = document.querySelector('#comment').value;
             let login = document.querySelector('#login').value;
 
+            let now = new Date(); // create date HH/min/s
+            let hh = now.getHours();
+            let min = now.getMinutes();
+            let sec = now.getSeconds();
+            now = hh + 'h ' + min + 'm ' + sec + 's';
+
             allMessag.push(message);
             dates.push(now);
 
-            let message = new Message(message, now); // create message object
-            // let jsonMessage = JSON.stringify(message); // transform message in string
+            // get $_SESSION & create Message object & transform stringify
+            doAjax({
+                url: 'Controller/displaySession.php',
+                callback: function (reponse) {
+                    if (reponse === '') {
+                        console.log('session empty');
+                        exit(1);
+                    }
+                    let user = JSON.parse(reponse);
+                    let messageObj = new Message(message, now, user.id); // create message object
+                    let jsonMessage = JSON.stringify(messageObj); // transform message in string
 
-            // doAjax({
-            //     method: 'POST',
-            //     url: 'Controller/yo.php',
-            //     args: 'message=' + jsonMessage
-            // });
-        });
-
-        document.querySelector('#loginButt').addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector('#login').style.display = 'block';
+                    //post messageString in db
+                    doAjax({
+                        method: 'POST',
+                        url: 'Controller/yo.php',
+                        args: 'message=' + jsonMessage
+                    });
+                }
+            });
         });
     </script>
 </body>
