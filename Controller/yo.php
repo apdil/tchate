@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $pdo = new PDO('mysql:host=localhost; dbname=tchat', 'admin', 'pomme');
 
@@ -15,7 +16,10 @@ if(!empty($_POST['message'])) { // if POST put comment in mysql
 
     echo json_encode($message);
 } else {
-    $stmt = $pdo->query('SELECT comment, user FROM comments'); // get data
+
+    $stmt = $pdo->query('SELECT login, comments.comment, comments.`date` FROM users INNER JOIN 
+    comments ON users.id = comments.user;
+'); // get data
     $ligns = $stmt->fetchAll();
     echo(json_encode($ligns));
 }
