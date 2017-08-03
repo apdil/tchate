@@ -2,7 +2,7 @@ let checkLogin = document.querySelector('#creatLogin');
 let creatButt = document.querySelector('#creatButt');
 
 setInterval(function () {
-    fetch('Controller/checkLogin.php').then(function (reponse) {
+    fetch('Controller/checkUsers.php').then(function (reponse) {
         return reponse.json();
     }).then(function (json) { // get user object with only login
         for (let indexArray of json) {

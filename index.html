@@ -15,21 +15,23 @@
     <section>
         <h2>Registration</h2>
         <form action="Controller/registrationProcess.php" method="POST">
+            <!-- create user in db -->
             <input id='creatLogin' type="text" name='creatLogin' placeholder="NewLogin">
             <input id='creatMdp' type="password" name='creatMdp' placeholder="Mdp">
             <input id='creatButt' class='btn btn-primary' type="submit" value='send'>
         </form>
     </section>
-    <!-- <section>
+     <section>
         <h2>Connexion</h2>
-        <form action="POST">
-            <input id='creatLogin' type="text" name='creatLogin' placeholder="NewLogin">
-            <input id='creatMdp' type="password" name='creatMdp' placeholder="Mdp">
-            <input id='creatButt' class='btn btn-primary' type="submit" value='send'>
+        <form action="Controller/checkConnexion.php" method='POST'>
+            <input id='connectLogin' type="text" name='connectLogin' placeholder="Login">
+            <input id='connectMdp' type="password" name='connectMdp' placeholder="Mdp">
+            <input id='connectButt' class='btn btn-primary' type="submit" value='send'>
         </form>
-    </section> -->
-    <script src='script/checkExistUser.js'></script><!-- form creat = verif if entry login exist -->
-    <script></script>
+    </section> 
+    <script src='script/checkExistUser.js'></script>
+    <!-- form creat = verif if entry login exist -->
+    <script src='script/checkConnexion.js'></script>
 </body>
 
 </html>
