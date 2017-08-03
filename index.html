@@ -1,132 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-        crossorigin="anonymous">
-    <title>Document</title>
-    <style>
-        #displayMessag {
-            border: 1px solid black;
-            height: 60vh;
-            overflow: scroll;
-        }
-
-        #login {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Connexion</title>
 </head>
-
 <body>
-    <section class='container-fluid col-md-6'>
-        <h2>TCHAT STYLEEE</h2>
-        <div id='displayMessag'>
-        </div>
-        <form action="yo.php">
-            <div class='form-group'>
-                <input type="text" name="comment" id="comment" class='form-control' placeholder="Comment">
-                <input id='submit' type="submit" value='send' class="btn btn-primary form-control">
-            </div>
-        </form>
-    </section>
-    <script src='script/ajax.js'></script>
-    <script src='Model/Message.js'></script>
-    <script>
-        let oldMessag = []; // get db state
-        let allMessag = []; // put message
-        let dates = []; // put date of messags
-
-        let displayMessag = document.querySelector('#displayMessag');
-
-        // get message & put in displayMessag
-        let intervalID = setInterval(function () {
-            doAjax({
-                method: 'GET',
-                url: 'Controller/yo.php',
-                callback: function (reponse) {
-                    if (reponse != '') { // if database is empty
-                        let object = JSON.parse(reponse);
-                        if (object !== oldMessag[oldMessag.length - 1]) {
-                            oldMessag.push(object);
-                            displayMessag.innerHTML = "";
-                            for (let commentObject of object) {
-                                displayTchat(commentObject); // inner displayMessage display message
-                            }
-                            displayMessag.scrollTop = displayMessag.scrollHeight;
-                        }
-                    }
-                    // document.querySelector('#displayMessag').addEventListener('scroll', function () {
-                    //     clearInterval(intervalID);
-                    // });
-                }
-            });
-        }, 500);
-
-        // put messag in db
-        document.querySelector('#submit').addEventListener('click', function (e) {
-            e.preventDefault();
-            let message = document.querySelector('#comment').value;
-
-            let now = new Date(); // create date HH/min/s
-            let hh = now.getHours();
-            let min = now.getMinutes();
-            let sec = now.getSeconds();
-            now = hh + 'h ' + min + 'm ' + sec + 's';
-
-            allMessag.push(message);
-            dates.push(now);
-
-            // get $_SESSION & create Message object & transform stringify
-            doAjax({
-                url: 'Controller/displaySession.php',
-                callback: function (reponse) {
-                    if (reponse === '') {
-                        console.log('session empty');
-                        exit(1);
-                    }
-                    let user = JSON.parse(reponse);
-                    let messageObj = new Message(message, now, user.id); // create message object
-                    let jsonMessage = JSON.stringify(messageObj); // transform message in string
-
-                    //post messageString in db
-                    doAjax({
-                        method: 'POST',
-                        url: 'Controller/yo.php',
-                        args: 'message=' + jsonMessage
-                    });
-                }
-            });
-        });
-
-        function displayTchat(commentObject) {
-            let div = document.createElement('div');
-            let divCard = document.createElement('div');
-            let blockquote = document.createElement('blockquote');
-            let p = document.createElement('p');
-            let date = document.createElement('p');
-            let login = document.createElement('h5');
-
-            p.textContent = commentObject.comment;
-            date.textContent = commentObject.date;
-            login.textContent = commentObject.login;
-
-            blockquote.appendChild(p);
-            blockquote.appendChild(login);
-            blockquote.appendChild(date);
-
-            div.classList = "card card-inverse card-warning mb-3 text-center col-md-5";
-            divCard.classList = 'card-block';
-            blockquote.classList = 'card-blockquote';
-
-            divCard.appendChild(blockquote);
-            div.appendChild(divCard);
-            displayMessag.appendChild(div);
-        }
-    </script>
+    <form action="POST">
+        <input id='creatLogin' type="text" name='creatLogin' placeholder="NewLogin">
+        <input id='creatMdp' type="password" name='creatMdp' placeholder="Mdp">
+        <input type="submit" value='send'>
+    </form>
+    <script src='script/checkExistUser.js'></script>
 </body>
-
 </html>
