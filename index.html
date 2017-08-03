@@ -12,7 +12,6 @@
         #displayMessag {
             border: 1px solid black;
             height: 60vh;
-            width: 30%;
             overflow: scroll;
         }
 
@@ -23,14 +22,17 @@
 </head>
 
 <body>
-    <h2>TCHAT STYLEEE</h2>
-    <div id='displayMessag'>
-    </div>
-    <form action="yo.php">
-        <input name="comment" id="comment" placeholder="Comment">
-        <input name="login" id="login" placeholder="login">
-        <input id='submit' type="submit" value='send'>
-    </form>
+    <section class='container-fluid col-md-6'>
+        <h2>TCHAT STYLEEE</h2>
+        <div id='displayMessag'>
+        </div>
+        <form action="yo.php">
+            <div class='form-group'>
+                <input type="text" name="comment" id="comment" class='form-control' placeholder="Comment">
+                <input id='submit' type="submit" value='send' class="btn btn-primary form-control">
+            </div>
+        </form>
+    </section>
     <script src='script/ajax.js'></script>
     <script src='Model/Message.js'></script>
     <script>
@@ -57,6 +59,9 @@
                             displayMessag.scrollTop = displayMessag.scrollHeight;
                         }
                     }
+                    // document.querySelector('#displayMessag').addEventListener('scroll', function () {
+                    //     clearInterval(intervalID);
+                    // });
                 }
             });
         }, 500);
@@ -65,7 +70,6 @@
         document.querySelector('#submit').addEventListener('click', function (e) {
             e.preventDefault();
             let message = document.querySelector('#comment').value;
-            let login = document.querySelector('#login').value;
 
             let now = new Date(); // create date HH/min/s
             let hh = now.getHours();
@@ -99,20 +103,28 @@
         });
 
         function displayTchat(commentObject) {
-            let innerdiv = document.createElement('div');
+            let div = document.createElement('div');
+            let divCard = document.createElement('div');
+            let blockquote = document.createElement('blockquote');
             let p = document.createElement('p');
             let date = document.createElement('p');
-            let login = document.createElement('p');
+            let login = document.createElement('h5');
 
             p.textContent = commentObject.comment;
             date.textContent = commentObject.date;
             login.textContent = commentObject.login;
 
-            innerdiv.appendChild(p);
-            innerdiv.appendChild(date);
-            innerdiv.appendChild(login);
+            blockquote.appendChild(p);
+            blockquote.appendChild(login);
+            blockquote.appendChild(date);
 
-            displayMessag.appendChild(innerdiv);
+            div.classList = "card card-inverse card-warning mb-3 text-center col-md-5";
+            divCard.classList = 'card-block';
+            blockquote.classList = 'card-blockquote';
+
+            divCard.appendChild(blockquote);
+            div.appendChild(divCard);
+            displayMessag.appendChild(div);
         }
     </script>
 </body>

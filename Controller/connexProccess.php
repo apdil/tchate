@@ -13,6 +13,7 @@ foreach($users as $user){
         if($mdp === $user['mdp']){
             $_SESSION['user'] = $user;
             header('Location:../index.html');
+            break;
         } else {
             header('Location:../registration.html');
         }
