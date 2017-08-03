@@ -13,6 +13,9 @@
         .red {
             background-color: red;
         }
+        small{
+            display: none;
+        }
     </style>
 </head>
 
@@ -23,6 +26,9 @@
             <input id='login' type="text" placeholder="Login">
             <input id='mdp' type="password" placeholder="Mdp">
             <input id='submit' type='submit' value='send'>
+            <small id="passwordHelpInline" class="text-muted">
+                 Login Exist !
+            </small>
         </form>
     </section>
     <section class="container-fluid">
@@ -47,10 +53,12 @@
                         if (user.login === login) {
                             document.querySelector('#login').classList = 'red';
                             document.querySelector('#submit').style.display = 'none';
+                            document.querySelector('small').style.display = 'block';
                             break;
                         } else {
                             document.querySelector('#login').classList.remove('red');
                             document.querySelector('#submit').style.display = 'block';
+                            document.querySelector('small').style.display = 'none';
                         }
                     }
                 }
