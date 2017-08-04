@@ -1,18 +1,17 @@
 <?php
-$login = htmlspecialchars($_POST['connectLogin']);
-$mdp = htmlspecialchars($_POST['connectMdp']);
+$login = htmlspecialchars($_POST['login']);
+$mdp = htmlspecialchars($_POST['mdp']);
 
-include_once 'checkUsers.php'; // get $users to DB
+$pdo = new PDO('mysql:host=localhost;dbname=tchat', 'admin', 'pomme');
+
+$stmt = $pdo->query('SELECT * FROM `users`');
+$users = $stmt->fetchAll();
 
 foreach($users as $user){
-    if($user['login'] === $login){
-        if($user['mdp'] === $mdp){
-            header('Location:../tchat.html');
-        } else {
-            header('Location:../index.html');
-        }
+    if($user['login'] === $login && $user['mdp'] === $mdp){
+        echo 'succes';
     } else{
-        header('Location:../index.html');
+        echo 'login or mdp false';
     }
 }
 
