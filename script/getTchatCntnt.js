@@ -1,15 +1,19 @@
-let displayTchat = document.querySelector('#displayTchat');
+let displayTchat = document.querySelector('#displayMessg');
 
-fetch('Controller/checkMessages.php').then(function(reponse){
-    return reponse.json();
-}).then(function(json){
-    putMessages(json);
-}).catch(function(err){
-    console.log(err.message);
-})
+setInterval(function(){
+    fetch('Controller/checkMessages.php').then(function (reponse) {
+        return reponse.json();
+    }).then(function (json) {
+        putMessages(json);
+    }).catch(function (err) {
+        console.log(err.message);
+    })
+    displayTchat.scrollTop = displayTchat.scrollHeight;
+}, 500);
 
-function putMessages(object){
-    for(let message of object){
+
+function putMessages(object) {
+    for (let message of object) {
         let div = document.createElement('div');
         let h5 = document.createElement('h5');
         let p = document.createElement('p');

@@ -11,7 +11,7 @@ $users = $stmt->fetchAll();
 
 foreach($users as $user){
     if($user['login'] === $login && $user['mdp'] === $mdp){
-        $_SESSION['user'] = $user;
+        $_SESSION['login'] = $user;
         echo 'succes';
     }
 }
