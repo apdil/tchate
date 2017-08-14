@@ -1,6 +1,8 @@
 <?php
-$login = htmlspecialchars($_POST['login']);
-$mdp = htmlspecialchars($_POST['mdp']);
+session_start();
+
+$login = htmlspecialchars($_GET['login']);
+$mdp = htmlspecialchars($_GET['mdp']);
 
 $pdo = new PDO('mysql:host=localhost;dbname=tchat', 'admin', 'pomme');
 
@@ -9,11 +11,9 @@ $users = $stmt->fetchAll();
 
 foreach($users as $user){
     if($user['login'] === $login && $user['mdp'] === $mdp){
+        $_SESSION['user'] = $user;
         echo 'succes';
-    } else{
-        echo 'login or mdp false';
     }
 }
-
 
 ?>

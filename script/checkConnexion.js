@@ -2,22 +2,19 @@
 let login = document.querySelector('#connectLogin');
 let mdp = document.querySelector('#connectMdp');
 
-document.querySelector('#connectButt').addEventListener('click', function(e){
+document.querySelector('#connectButt').addEventListener('click', function (e) {
     e.preventDefault();
 
-    let init = {
-        method: 'POST',
-        body: JSON.stringify({
-            login: login.value,
-            mdp: mdp.value
-        })
-    };
-
-    fetch('Controller/checkConnexion.php', init).then(function(reponse){
+    fetch('Controller/checkConnexion.php?login='+login.value+'&mdp='+mdp.value).then(function (reponse) {
         return reponse.text();
-    }).then(function(txt){
+    }).then(function (txt) {
+        if(txt === 'succes'){
+            window.location = 'tchat.html';
+        }
         console.log(txt);
-    }).catch(function(err){
+    }).catch(function (err) {
         console.log(err);
     })
+    login.value = '';
+    mdp.value = '';
 });
