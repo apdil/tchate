@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-$login = htmlspecialchars($_GET['login']);
-$mdp = htmlspecialchars($_GET['mdp']);
+$login = htmlspecialchars($_POST['connectLogin']);
+$mdp = htmlspecialchars($_POST['connectMdp']);
 
 $pdo = new PDO('mysql:host=localhost;dbname=tchate', 'admin', 'pomme');
 
@@ -12,8 +12,10 @@ $users = $stmt->fetchAll();
 foreach($users as $user){
     if($user['login'] === $login && $user['mdp'] === $mdp){
         $_SESSION['login'] = $user;
-        echo 'succes';
+        header('Location:../tchat.html');
+        return;
     }
 }
+header('Location:../index.html');
 
 ?>
