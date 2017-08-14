@@ -46,5 +46,7 @@ function putMessages(object) {
     div.appendChild(p);
     div.appendChild(date);
 
+    div.classList = 'card-block card';
+
     displayTchat.appendChild(div);
 }

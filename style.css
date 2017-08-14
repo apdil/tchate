@@ -6,3 +6,7 @@
     overflow: hidden;
     height: 60vh;
 }
+
+.card{
+    background-color: teal;
+}
