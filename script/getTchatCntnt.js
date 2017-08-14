@@ -1,6 +1,7 @@
 let displayTchat = document.querySelector('#displayMessg');
 
 setInterval(function(){
+    displayTchat.innerHTML = '';
     fetch('Controller/checkMessages.php').then(function (reponse) {
         return reponse.json();
     }).then(function (json) {
@@ -9,7 +10,7 @@ setInterval(function(){
         console.log(err.message);
     })
     displayTchat.scrollTop = displayTchat.scrollHeight;
-}, 500);
+}, 1000);
 
 
 function putMessages(object) {
