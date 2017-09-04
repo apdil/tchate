@@ -1,11 +1,12 @@
 <?php
-    $user = $_POST['user'];
+$login = htmlspecialchars($_POST['creatLogin']);
+$mdp = htmlspecialchars($_POST['creatMdp']);
 
-    $userObject = json_decode($user);
-    
-    $pdo = new PDO('mysql:host=localhost;dbname=tchat', 'admin', 'pomme');
-    $stmt = $pdo->prepare('INSERT INTO `users` (login, mdp) VALUES (:login, :mdp)');
-    $stmt->bindValue(':login', $userObject->login, PDO::PARAM_STR);
-    $stmt->bindValue(':mdp', $userObject->mdp, PDO::PARAM_STR);
-    $stmt->execute();
+$pdo = new PDO('mysql:host=localhost; dbname=tchate', 'admin', 'pomme');
+$stmt = $pdo->prepare('INSERT INTO `users` (login, mdp) VALUES (:login, :mdp)');
+$stmt->bindValue(':login', $login, PDO::PARAM_STR);
+$stmt->bindValue(':mdp', $mdp, PDO::PARAM_STR);
+$stmt->execute();
+
+header('Location: ../index.html');
 ?>

@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body class='container'>
+    <h2>TCHATE</h2>
+    <div id='displayMessg' class='container-fluid col-md-6'></div>
+    <form action="#">
+        <input id='message' class='form-control' type="text" placeholder="message">
+        <input id='submit' class='btn btn-primary form-control' type="submit" value='send'>
+    </form>
+</body>
+<script src='script/getTchatCntnt.js'></script>
+<script src='script/postMessagDB.js'></script>
+</html>
